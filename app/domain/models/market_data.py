@@ -22,7 +22,7 @@ class MarketDataPoint(TimestampMixin, Base):
             "asset_id",
             "interval",
             "timestamp",
-            name="market_data_points_asset_id_interval_timestamp",
+            name="uq_market_data_points_asset_id_interval_timestamp",
         ),
         CheckConstraint("volume >= 0", name="volume_non_negative"),
     )

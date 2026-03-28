@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class Asset(TimestampMixin, Base):
     __tablename__ = "assets"
     __table_args__ = (
-        UniqueConstraint("symbol", "exchange", name="assets_symbol_exchange"),
+        UniqueConstraint("symbol", "exchange", name="uq_assets_symbol_exchange"),
         Index("ix_assets_symbol", "symbol"),
         Index("ix_assets_is_active", "is_active"),
     )

@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class Watchlist(TimestampMixin, Base):
     __tablename__ = "watchlists"
     __table_args__ = (
-        UniqueConstraint("user_id", "name", name="watchlists_user_id_name"),
+        UniqueConstraint("user_id", "name", name="uq_watchlists_user_id_name"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -36,7 +36,7 @@ class Watchlist(TimestampMixin, Base):
 class WatchlistItem(TimestampMixin, Base):
     __tablename__ = "watchlist_items"
     __table_args__ = (
-        UniqueConstraint("watchlist_id", "asset_id", name="watchlist_items_watchlist_id_asset_id"),
+        UniqueConstraint("watchlist_id", "asset_id", name="uq_watchlist_items_watchlist_id_asset_id"),
         Index("ix_watchlist_items_asset_id", "asset_id"),
     )
 
