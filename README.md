@@ -4,19 +4,24 @@ Backend-first Market Watch & Alerts API for personal watchlists and finance rese
 
 ## Current status
 
-This repo is currently at **Step 3: local containers**.
+This repo is currently at **Step 6: API shell**.
 
 In place now:
 
-- FastAPI application entrypoint
-- env-based configuration
-- SQLAlchemy database scaffold
-- `GET /health` endpoint
-- local Docker Compose stack with:
+- Docker Compose local stack:
   - `api`
   - `db`
   - `worker`
-- Alembic bootstrap so migration commands run locally
+- SQLAlchemy 2.0 ORM models for the V1 schema
+- Alembic migration chain:
+  - `0001_step3_bootstrap`
+  - `0002_step4_create_v1_schema`
+- versioned API routing under `/api/v1`
+- thin route handlers
+- typed request and response schemas
+- service-layer stubs for unfinished business logic
+- legacy `GET /health` kept working for backwards compatibility
+- canonical versioned `GET /api/v1/health`
 
 ## V1 boundaries
 
