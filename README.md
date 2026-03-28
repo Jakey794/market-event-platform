@@ -4,7 +4,7 @@ Backend-first Market Watch & Alerts API for personal watchlists and finance rese
 
 ## Current status
 
-This repo is currently at **Step 2: repo + development skeleton**.
+This repo is currently at **Step 3: local containers**.
 
 In place now:
 
@@ -12,9 +12,11 @@ In place now:
 - env-based configuration
 - SQLAlchemy database scaffold
 - `GET /health` endpoint
-- pytest setup
-- Ruff lint/format setup
-- local PostgreSQL via Docker Compose
+- local Docker Compose stack with:
+  - `api`
+  - `db`
+  - `worker`
+- Alembic bootstrap so migration commands run locally
 
 ## V1 boundaries
 
@@ -29,7 +31,7 @@ Locked in `PROJECT_SCOPE.md`:
 - market data cadence: every 15 minutes during US market hours on trading days
 - deployment target: Render
 
-## Quickstart
+## Local quickstart
 
 ### 1. Create your local env file
 

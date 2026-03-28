@@ -12,18 +12,24 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-market_watch}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-market_watch}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - market_watch_network
 
   api:
-    image: python:3.12-slim
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: market-watch-api
     working_dir: /app
-    command: >
-      sh -c "pip install --no-cache-dir -e '.[dev]' &&
-             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     env_file:
       - .env
     environment:
@@ -35,6 +41,31 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - market_watch_network
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: market-watch-worker
+    working_dir: /app
+    command: python -m app.workers.runner
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL_DOCKER:-postgresql+psycopg://postgres:postgres@db:5432/market_watch}
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - market_watch_network
 
 volumes:
   postgres_data:
+
+networks:
+  market_watch_network:
+    driver: bridge

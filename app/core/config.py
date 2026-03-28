@@ -26,6 +26,8 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/market_watch"
 
+    worker_heartbeat_seconds: int = 60
+
     @field_validator("app_env")
     @classmethod
     def validate_app_env(cls, value: str) -> str:
